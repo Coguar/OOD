@@ -49,6 +49,7 @@ public:
 		for (auto & observer : m_observers)
 		{
 			observer->Update(data);
+
 		}
 	}
 

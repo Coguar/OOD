@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <climits>
 #include "Observer.h"
+#include <map>
 
 using namespace std;
 
@@ -12,6 +13,7 @@ struct SWeatherInfo
 	double temperature = 0;
 	double humidity = 0;
 	double pressure = 0;
+	std::string stantionName;
 };
 
 class CDisplay: public IObserver<SWeatherInfo>
@@ -55,26 +57,48 @@ private:
 
 };
 
+struct SSensorsList
+{
+	CSensorData m_tempSensor;
+	CSensorData m_humiditySensor;
+	CSensorData m_pressureSensor;
+};
 class CStatsDisplay : public IObserver<SWeatherInfo>
 {
 public:
 	void Update(SWeatherInfo const& data) override
 	{
-		m_tempSensor.UpdateSensor(data.temperature, "temperature");
-		m_humiditySensor.UpdateSensor(data.humidity, "humidity");
-		m_pressureSensor.UpdateSensor(data.pressure, "pressure");
+		auto stantion = m_WeatherStantionDic.find(data.stantionName);
+		if (stantion == m_WeatherStantionDic.end())
+		{
+			AddInMap(data.stantionName);
+		}
+		stantion = m_WeatherStantionDic.find(data.stantionName);
+
+			std::cout << "--------" << data.stantionName.c_str() << "--------" << std::endl;
+			stantion->second.m_tempSensor.UpdateSensor(data.temperature, "temperature");
+			stantion->second.m_humiditySensor.UpdateSensor(data.humidity, "humidity");
+			stantion->second.m_pressureSensor.UpdateSensor(data.pressure, "pressure");
 	}
 private:
 
-	CSensorData m_tempSensor;
-	CSensorData m_humiditySensor;
-	CSensorData m_pressureSensor;
+	std::map<std::string, SSensorsList> m_WeatherStantionDic ;
+
+	void AddInMap(std::string key)
+	{
+		m_WeatherStantionDic.insert(std::pair<std::string, SSensorsList>(key, SSensorsList()));
+
+	}
 
 };
 
 class CWeatherData : public CObservable<SWeatherInfo>
 {
 public:
+	CWeatherData(std::string name)
+	{
+		m_stantionName = name;
+	}
 	// Температура в градусах Цельсия
 	double GetTemperature()const
 	{
@@ -111,10 +135,12 @@ protected:
 		info.temperature = GetTemperature();
 		info.humidity = GetHumidity();
 		info.pressure = GetPressure();
+		info.stantionName = m_stantionName;
 		return info;
 	}
 private:
 	double m_temperature = 0.0;
 	double m_humidity = 0.0;	
-	double m_pressure = 760.0;	
+	double m_pressure = 760.0;
+	std::string m_stantionName;
 };
