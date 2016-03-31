@@ -34,7 +34,7 @@ class CSensorData
 {
 public:
 
-	CSensorData(std::string sensorName)
+	CSensorData(std::string const& sensorName)
 		:m_sensorName(sensorName)
 	{
 	}
@@ -92,7 +92,7 @@ private:
 
 	std::map<std::string, SSensorsList> m_weatherStantionDic ;
 
-	void AddInMap(std::string key)
+	void AddInMap(std::string const& key)
 	{
 		m_weatherStantionDic.insert(std::pair<std::string, SSensorsList>(key, SSensorsList()));
 
@@ -103,9 +103,9 @@ private:
 class CWeatherData : public CObservable<SWeatherInfo>
 {
 public:
-	CWeatherData(std::string name)
+	CWeatherData(std::string const& name)
+		:m_stantionName(name)
 	{
-		m_stantionName = name;
 	}
 	// Температура в градусах Цельсия
 	double GetTemperature()const
