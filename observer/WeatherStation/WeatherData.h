@@ -5,8 +5,10 @@
 #include <climits>
 #include "Observer.h"
 #include <map>
+#include <string>
 
 using namespace std;
+
 
 struct SWeatherInfo
 {
@@ -31,7 +33,13 @@ public:
 class CSensorData
 {
 public:
-	void UpdateSensor(double const& sensorData, std::string sensorName)
+
+	CSensorData(std::string sensorName)
+		:m_sensorName(sensorName)
+	{
+	}
+
+	void UpdateSensor(double const& sensorData)
 	{
 		if (m_minValue > sensorData)
 		{
@@ -44,9 +52,9 @@ public:
 		m_accValue += sensorData;
 		++m_countAcc;
 
-		std::cout << "Max " << sensorName.c_str() << " " << m_maxValue << std::endl;
-		std::cout << "Min " << sensorName.c_str() << " " << m_minValue << std::endl;
-		std::cout << "Average " << sensorName.c_str() << " " << (m_accValue / m_countAcc) << std::endl;
+		std::cout << "Max " << m_sensorName << " " << m_maxValue << std::endl;
+		std::cout << "Min " << m_sensorName << " " << m_minValue << std::endl;
+		std::cout << "Average " << m_sensorName << " " << (m_accValue / m_countAcc) << std::endl;
 		std::cout << "----------------" << std::endl;
 	}
 private:
@@ -54,39 +62,39 @@ private:
 	double m_maxValue = -std::numeric_limits<double>::infinity();
 	double m_accValue = 0;
 	unsigned m_countAcc = 0;
-
+	std::string m_sensorName;
 };
 
 struct SSensorsList
 {
-	CSensorData m_tempSensor;
-	CSensorData m_humiditySensor;
-	CSensorData m_pressureSensor;
+	CSensorData m_tempSensor = CSensorData("temperature");
+	CSensorData m_humiditySensor = CSensorData("humidity");
+	CSensorData m_pressureSensor = CSensorData("pressure");
 };
 class CStatsDisplay : public IObserver<SWeatherInfo>
 {
 public:
 	void Update(SWeatherInfo const& data) override
 	{
-		auto stantion = m_WeatherStantionDic.find(data.stantionName);
-		if (stantion == m_WeatherStantionDic.end())
+		auto station = m_weatherStantionDic.find(data.stantionName);
+		if (station == m_weatherStantionDic.end())
 		{
 			AddInMap(data.stantionName);
 		}
-		stantion = m_WeatherStantionDic.find(data.stantionName);
+		station = m_weatherStantionDic.find(data.stantionName);
 
-			std::cout << "--------" << data.stantionName.c_str() << "--------" << std::endl;
-			stantion->second.m_tempSensor.UpdateSensor(data.temperature, "temperature");
-			stantion->second.m_humiditySensor.UpdateSensor(data.humidity, "humidity");
-			stantion->second.m_pressureSensor.UpdateSensor(data.pressure, "pressure");
+		std::cout << "--------" << data.stantionName.c_str() << "--------" << std::endl;
+		station->second.m_tempSensor.UpdateSensor(data.temperature);
+		station->second.m_humiditySensor.UpdateSensor(data.humidity);
+		station->second.m_pressureSensor.UpdateSensor(data.pressure);
 	}
 private:
 
-	std::map<std::string, SSensorsList> m_WeatherStantionDic ;
+	std::map<std::string, SSensorsList> m_weatherStantionDic ;
 
 	void AddInMap(std::string key)
 	{
-		m_WeatherStantionDic.insert(std::pair<std::string, SSensorsList>(key, SSensorsList()));
+		m_weatherStantionDic.insert(std::pair<std::string, SSensorsList>(key, SSensorsList()));
 
 	}
 
@@ -128,6 +136,7 @@ public:
 
 		MeasurementsChanged();
 	}
+
 protected:
 	SWeatherInfo GetChangedData()const override
 	{
@@ -142,5 +151,6 @@ private:
 	double m_temperature = 0.0;
 	double m_humidity = 0.0;	
 	double m_pressure = 760.0;
+
 	std::string m_stantionName;
 };

@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <set>
+#include<vector>
+#include <map>
 #include <functional>
 
 /*
@@ -13,8 +15,9 @@ template <typename T>
 class IObserver
 {
 public:
-	virtual void Update(T const& data) = 0;
+	virtual void Update(T const& data)  = 0;
 	virtual ~IObserver() = default;
+	size_t m_priority = 0;
 };
 
 /*
@@ -26,7 +29,7 @@ class IObservable
 {
 public:
 	virtual ~IObservable() = default;
-	virtual void RegisterObserver(IObserver<T> & observer) = 0;
+	virtual void RegisterObserver(IObserver<T> & observer, size_t const& priority) = 0;
 	virtual void NotifyObservers() = 0;
 	virtual void RemoveObserver(IObserver<T> & observer) = 0;
 };
@@ -38,9 +41,9 @@ class CObservable : public IObservable<T>
 public:
 	typedef IObserver<T> ObserverType;
 
-	void RegisterObserver(ObserverType & observer) override
+	void RegisterObserver(ObserverType & observer, size_t const& priority) override
 	{
-		m_observers.insert(&observer);
+		m_observers.emplace(priority, &observer);
 	}
 
 	void NotifyObservers() override
@@ -48,14 +51,21 @@ public:
 		T data = GetChangedData();
 		for (auto & observer : m_observers)
 		{
-			observer->Update(data);
+			observer.second->Update(data);
 
 		}
 	}
 
 	void RemoveObserver(ObserverType & observer) override
 	{
-		m_observers.erase(&observer);
+		for (auto it = m_observers.begin(); it != m_observers.end(); ++it)
+		{
+			if (it->second == &observer)
+			{
+				m_observers.erase(it);
+				break;
+			}
+		}
 	}
 
 protected:
@@ -64,5 +74,5 @@ protected:
 	virtual T GetChangedData()const = 0;
 
 private:
-	std::set<ObserverType *> m_observers;
+	std::map<size_t, ObserverType*> m_observers;
 };
