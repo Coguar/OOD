@@ -153,7 +153,8 @@ int main()
 			<< MakeCondiment<CIceCubes>(2, IceCubeType::Dry)// брасаем пару кубиков сухого льда
 			<< MakeCondiment<CChocolateCrumbs>(2)			// посыпаем шоколадной крошкой
 			<< MakeCondiment<CChocolateSlices>(12)			// заказываем шоколадки	
-			<< MakeCondiment<CLiquor>(LiquorType::Nuts);	// добавляем ликер		
+			<< MakeCondiment<CLiquor>(LiquorType::Nuts)		// добавляем ликер	
+			<< MakeCondiment<CCream>();						// сливки
 
 		// Выписываем счет покупателю
 		cout << beverage->GetDescription() << " costs " << beverage->GetCost() << endl;
@@ -162,8 +163,8 @@ int main()
 	{
 		auto beverage = 
 			make_unique<CMilkshake>(MilkShakeVolume::Big)// Наливаем молочный коктейль
-			<< MakeCondiment<CSyrup>(SyrupType::Maple)	// заливаем кленовым сиропом
-			<< MakeCondiment<CCoconutFlakes>(8);		// посыпаем кокосовой стружкой
+			<< MakeCondiment<CSyrup>(SyrupType::Chocolate)	// заливаем кленовым сиропом
+			<< MakeCondiment<CCoconutFlakes>(100);		// посыпаем кокосовой стружкой
 
 		// Выписываем счет покупателю
 		cout << beverage->GetDescription() << " costs " << beverage->GetCost() << endl;
