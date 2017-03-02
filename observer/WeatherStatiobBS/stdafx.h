@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
 
-
+#define _SCL_SECURE_NO_WARNINGS
 // TODO: reference additional headers your program requires here
