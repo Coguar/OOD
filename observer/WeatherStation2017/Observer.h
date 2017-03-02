@@ -52,8 +52,9 @@ public:
 
 	void NotifyObservers() override
 	{
+		auto copyObservers = m_observers;
 		T data = GetChangedData();
-		for (auto & observer : m_observers)
+		for (auto & observer : copyObservers)
 		{
 			observer.second->Update(data, GetName());
 		}
