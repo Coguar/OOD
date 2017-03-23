@@ -8,6 +8,6 @@ public:
 	CPainter();
 	~CPainter();
 
-	void DrawPicture(CPictureDraft const& draft, ICanvas * canvas) override;
+	void DrawPicture(CPictureDraft const& draft, ICanvas & canvas) override;
 };
 

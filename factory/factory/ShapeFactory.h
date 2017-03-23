@@ -13,8 +13,8 @@ public:
 private:
 	Color GetColor(std::string const& color);
 
-	std::shared_ptr<CAbstractShape> CreateRectangle(std::stringstream & descr);
-	std::shared_ptr<CAbstractShape> CreateEllipse(std::stringstream & descr);
-	std::shared_ptr<CAbstractShape> CreateTriangle(std::stringstream & descr);
+	std::shared_ptr<CAbstractShape> CreateRectangle(std::istream & descr);
+	std::shared_ptr<CAbstractShape> CreateEllipse(std::istream & descr);
+	std::shared_ptr<CAbstractShape> CreateTriangle(std::istream & descr);
 };
 

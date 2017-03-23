@@ -8,16 +8,16 @@ struct ICanvas;
 class CClient
 {
 public:
-	CClient(IDesigner * designer, IPainter * painter);
+	CClient(IDesigner & designer, IPainter & painter);
 	~CClient();
 
 	void TurnToDesigner(std::istream & strm);
-	void TurnToPainter(ICanvas * canvas);
+	void TurnToPainter(ICanvas & canvas);
 
 private:
 
-	IDesigner * m_pDesigner = nullptr;
-	IPainter * m_pPainter = nullptr;
+	IDesigner & m_pDesigner;
+	IPainter & m_pPainter;
 
 	CPictureDraft m_pictureDraft;
 };

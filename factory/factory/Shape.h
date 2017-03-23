@@ -9,7 +9,7 @@ public:
 
 	void SetColor(Color color);
 	Color GetColor() const;
-	virtual void Draw(ICanvas * canvas) const; 
+	virtual void Draw(ICanvas & canvas) const; 
 
 private:
 	Color m_color;

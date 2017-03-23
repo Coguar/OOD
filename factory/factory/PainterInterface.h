@@ -6,5 +6,5 @@ struct ICanvas;
 struct IPainter
 {
 	virtual ~IPainter() = default;
-	virtual void DrawPicture(CPictureDraft const& draft, ICanvas * canvas) = 0;
+	virtual void DrawPicture(CPictureDraft const& draft, ICanvas & canvas) = 0;
 };

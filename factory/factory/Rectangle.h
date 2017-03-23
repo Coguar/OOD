@@ -8,7 +8,7 @@ public:
 	CRectangle(Vec2 const& topLeft, Vec2 const& size);
 	~CRectangle();
 
-	void Draw(ICanvas * canvas) const override;
+	void Draw(ICanvas & canvas) const override;
 
 	Vec2 GetLeftTop() const;
 	Vec2 GetRightBottom() const;

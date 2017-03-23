@@ -235,3 +235,6 @@ _Pvt_Extensions
 samples/01-basics/string-joiner/out.txt
 Lab6/UrlParser/Debug/
 *.tlog
+*.svg
+*.db
+*.idb

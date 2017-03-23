@@ -6,7 +6,7 @@ class CSVGCanvas :
 	public ICanvas
 {
 public:
-	CSVGCanvas(std::ofstream & strm);
+	CSVGCanvas(std::ostream & strm);
 	~CSVGCanvas();
 
 	void SetColor(Color color) override;
@@ -14,6 +14,6 @@ public:
 	void DrawEllipse(Vec2 const& center, Vec2 const& size) override;
 private:
 	Color m_currentColor;
-	std::ofstream & m_oStrm;
+	std::ostream & m_oStrm;
 };
 

@@ -13,12 +13,8 @@ CPainter::~CPainter()
 {
 }
 
-void CPainter::DrawPicture(CPictureDraft const & draft, ICanvas * canvas)
+void CPainter::DrawPicture(CPictureDraft const & draft, ICanvas & canvas)
 {
-	if (!canvas)
-	{
-		return;
-	}
 	for (auto &it : draft.GetShapesList())
 	{
 		it->Draw(canvas);

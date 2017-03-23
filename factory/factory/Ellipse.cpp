@@ -9,13 +9,10 @@ CEllipse::CEllipse(Vec2 const & center, Vec2 const & radius)
 
 CEllipse::~CEllipse() = default;
 
-void CEllipse::Draw(ICanvas * canvas) const
+void CEllipse::Draw(ICanvas & canvas) const
 {
-	if (canvas)
-	{
-		canvas->SetColor(GetColor());
-		canvas->DrawEllipse(m_center, m_radius);
-	}
+	canvas.SetColor(GetColor());
+	canvas.DrawEllipse(m_center, m_radius);
 }
 
 Vec2 CEllipse::GetCenter() const

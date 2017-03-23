@@ -53,7 +53,7 @@ Color CShapeFactory::GetColor(std::string const & color)
 	}
 }
 
-std::shared_ptr<CAbstractShape> CShapeFactory::CreateRectangle(std::stringstream & descr)
+std::shared_ptr<CAbstractShape> CShapeFactory::CreateRectangle(std::istream & descr)
 {
 	Vec2 position(-1.0, -1.0);
 	Vec2 size(-1.0, -1.0);
@@ -69,7 +69,7 @@ std::shared_ptr<CAbstractShape> CShapeFactory::CreateRectangle(std::stringstream
 	return shape;
 }
 
-std::shared_ptr<CAbstractShape> CShapeFactory::CreateEllipse(std::stringstream & descr)
+std::shared_ptr<CAbstractShape> CShapeFactory::CreateEllipse(std::istream & descr)
 {
 	
 	Vec2 center(-1.0, -1.0);
@@ -86,7 +86,7 @@ std::shared_ptr<CAbstractShape> CShapeFactory::CreateEllipse(std::stringstream &
 	return shape;
 }
 
-std::shared_ptr<CAbstractShape> CShapeFactory::CreateTriangle(std::stringstream & descr)
+std::shared_ptr<CAbstractShape> CShapeFactory::CreateTriangle(std::istream & descr)
 {
 	Vec2 v1(-1.0, -1.0);
 	Vec2 v2(-1.0, -1.0);

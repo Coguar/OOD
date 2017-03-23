@@ -21,7 +21,7 @@ Color CAbstractShape::GetColor() const
 	return m_color;
 }
 
-void CAbstractShape::Draw(ICanvas * canvas) const
+void CAbstractShape::Draw(ICanvas & canvas) const
 {
 
 }

@@ -11,16 +11,13 @@ CRectangle::CRectangle(Vec2 const& topLeft, Vec2 const& size)
 
 CRectangle::~CRectangle() = default;
 
-void CRectangle::Draw(ICanvas * canvas) const
+void CRectangle::Draw(ICanvas & canvas) const
 {
-	if (canvas)
-	{
-		canvas->SetColor(GetColor());
-		canvas->DrawLine(m_topLeft, { m_topLeft.x + m_size.x, m_topLeft.y });
-		canvas->DrawLine({ m_topLeft.x + m_size.x, m_topLeft.y }, { m_topLeft.x + m_size.x, m_topLeft.y + m_size.y});
-		canvas->DrawLine({ m_topLeft.x + m_size.x, m_topLeft.y + m_size.y }, { m_topLeft.x, m_topLeft.y + m_size.y });
-		canvas->DrawLine({ m_topLeft.x, m_topLeft.y + m_size.y }, m_topLeft );
-	}
+	canvas.SetColor(GetColor());
+	canvas.DrawLine(m_topLeft, { m_topLeft.x + m_size.x, m_topLeft.y });
+	canvas.DrawLine({ m_topLeft.x + m_size.x, m_topLeft.y }, { m_topLeft.x + m_size.x, m_topLeft.y + m_size.y });
+	canvas.DrawLine({ m_topLeft.x + m_size.x, m_topLeft.y + m_size.y }, { m_topLeft.x, m_topLeft.y + m_size.y });
+	canvas.DrawLine({ m_topLeft.x, m_topLeft.y + m_size.y }, m_topLeft);
 }
 
 Vec2 CRectangle::GetLeftTop() const

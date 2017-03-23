@@ -1,0 +1,4 @@
+Rectangle black 50 30 200 400
+Triangle red 135 80 165 80 150 120
+Ellipse red 150 70 10 10
+Rectangle black 230 200 10 20
