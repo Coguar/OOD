@@ -13,10 +13,132 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\graphics_lib">
+      <UniqueIdentifier>{771d08b1-f4eb-4876-bd6b-9c1020fd74e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\shape_drawing_lib">
+      <UniqueIdentifier>{e59dea57-1155-4981-8b64-ea0b17499750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\modern_graphics_lib">
+      <UniqueIdentifier>{0e24c893-9e77-4ee0-b60d-ccad57f144cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app">
+      <UniqueIdentifier>{15abbb57-85c1-4fc8-ae88-a0315bb1eeb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphics_lib_pro">
+      <UniqueIdentifier>{e18b66e5-9d9d-4f41-97f8-34c872418b7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\modern_graphics_lib_pro">
+      <UniqueIdentifier>{6362d688-b1db-4915-bfbd-e27590a8d917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\app_pro">
+      <UniqueIdentifier>{bb0a92f7-459b-4635-88cb-c31a7b74a280}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Header Files\graphics_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasPainter.cpp">
+      <Filter>Header Files\shape_drawing_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Header Files\shape_drawing_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>Header Files\shape_drawing_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ModernGraphicsRenderer.cpp">
+      <Filter>Header Files\modern_graphics_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasClassAdapter.cpp">
+      <Filter>Header Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="AppFunc.cpp">
+      <Filter>Header Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasAdaptor.cpp">
+      <Filter>Header Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasPro.cpp">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClCompile>
+    <ClCompile Include="ModernGraphicsRendererPro.cpp">
+      <Filter>Header Files\modern_graphics_lib_pro</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasAdaptorPro.cpp">
+      <Filter>Header Files\app_pro</Filter>
+    </ClCompile>
+    <ClCompile Include="TrianglePro.cpp">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClCompile>
+    <ClCompile Include="RectanglePro.cpp">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>Header Files\graphics_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ICanvas.h">
+      <Filter>Header Files\graphics_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasPainter.h">
+      <Filter>Header Files\shape_drawing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ICanvasDrawable.h">
+      <Filter>Header Files\shape_drawing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Header Files\shape_drawing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Header Files\shape_drawing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ModernGraphicsRenderer.h">
+      <Filter>Header Files\modern_graphics_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasClassAdapter.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasAdaptor.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="AppFunc.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="ICanvasPro.h">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasPro.h">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="ModernGraphicsRendererPro.h">
+      <Filter>Header Files\modern_graphics_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasAdaptorPro.h">
+      <Filter>Header Files\app_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="TrianglePro.h">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="RectanglePro.h">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="ICanvasDrawablePro.h">
+      <Filter>Header Files\graphics_lib_pro</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
