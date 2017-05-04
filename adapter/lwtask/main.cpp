@@ -1,7 +1,8 @@
 ﻿#include "stdafx.h"
 #include "AppFunc.h"
-using namespace std;
+#include "AppFuncPro.h"
 
+using namespace std;
 
 int main()
 {
@@ -9,11 +10,11 @@ int main()
 	string userInput;
 	if (getline(cin, userInput) && (userInput == "y" || userInput == "Y"))
 	{
-		app::PaintPictureOnModernGraphicsRenderer();
+		app_pro::PaintPictureOnModernGraphicsRenderer();
 	}
 	else
 	{
-		app::PaintPictureOnCanvas();
+		app_pro::PaintPictureOnCanvas();
 	}
 	return 0;
 }

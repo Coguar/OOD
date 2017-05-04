@@ -34,6 +34,9 @@
     <Filter Include="Header Files\app_pro">
       <UniqueIdentifier>{bb0a92f7-459b-4635-88cb-c31a7b74a280}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\shape_drawing_lib_pro">
+      <UniqueIdentifier>{f1bc8f8a-2d52-453f-97b6-9d5103a4c0dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -75,11 +78,17 @@
     <ClCompile Include="CanvasAdaptorPro.cpp">
       <Filter>Header Files\app_pro</Filter>
     </ClCompile>
-    <ClCompile Include="TrianglePro.cpp">
-      <Filter>Header Files\graphics_lib_pro</Filter>
+    <ClCompile Include="AppFuncPro.cpp">
+      <Filter>Header Files\app_pro</Filter>
     </ClCompile>
     <ClCompile Include="RectanglePro.cpp">
-      <Filter>Header Files\graphics_lib_pro</Filter>
+      <Filter>Header Files\shape_drawing_lib_pro</Filter>
+    </ClCompile>
+    <ClCompile Include="TrianglePro.cpp">
+      <Filter>Header Files\shape_drawing_lib_pro</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasPainterPro.cpp">
+      <Filter>Header Files\shape_drawing_lib_pro</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,14 +140,20 @@
     <ClInclude Include="CanvasAdaptorPro.h">
       <Filter>Header Files\app_pro</Filter>
     </ClInclude>
-    <ClInclude Include="TrianglePro.h">
-      <Filter>Header Files\graphics_lib_pro</Filter>
-    </ClInclude>
-    <ClInclude Include="RectanglePro.h">
-      <Filter>Header Files\graphics_lib_pro</Filter>
+    <ClInclude Include="AppFuncPro.h">
+      <Filter>Header Files\app_pro</Filter>
     </ClInclude>
     <ClInclude Include="ICanvasDrawablePro.h">
-      <Filter>Header Files\graphics_lib_pro</Filter>
+      <Filter>Header Files\shape_drawing_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="RectanglePro.h">
+      <Filter>Header Files\shape_drawing_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="TrianglePro.h">
+      <Filter>Header Files\shape_drawing_lib_pro</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasPainterPro.h">
+      <Filter>Header Files\shape_drawing_lib_pro</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

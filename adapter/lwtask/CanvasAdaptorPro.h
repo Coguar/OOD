@@ -9,7 +9,7 @@ class CanvasAdaptor : public graphics_lib_pro::ICanvas
 {
 public:
 	CanvasAdaptor(modern_graphics_lib_pro::CModernGraphicsRenderer & renderer);
-
+	~CanvasAdaptor();
 	void SetColor(uint32_t rgbColor) override;
 	void MoveTo(int x, int y) override;
 	void LineTo(int x, int y)override;

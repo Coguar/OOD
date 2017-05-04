@@ -15,6 +15,7 @@ CanvasAdaptor::~CanvasAdaptor()
 {
 	m_renderer.EndDraw();
 }
+
 void CanvasAdaptor::MoveTo(int x, int y)
 {
 	m_x = x;
