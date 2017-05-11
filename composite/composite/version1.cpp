@@ -191,6 +191,7 @@ void CSlide::InsertShape(const std::shared_ptr<CShape>& shape, size_t position)
 	{
 		m_shapes.insert(m_shapes.begin() + position, shape);
 	}
+	UpdateFrame();
 }
 
 void CSlide::RemoveShapeAtIndex(size_t index)
