@@ -31,32 +31,32 @@ void CStyle::SetColor(RGBAColor color)
 	m_color = color;
 }
 
-RectD CShape::GetFrame()
+RectD Component::GetFrame() const
 {
 	return m_frame;
 }
 
-void CShape::SetFrame(const RectD & rect)
+void Component::SetFrame(const RectD & rect)
 {
 	m_frame = rect;
 }
 
-CStyle CShape::GetLineStyle() const
+StyleVariant Component::GetLineStyle() const
 {
 	return m_lineStyle;
 }
 
-void CShape::SetLineStyle(const CStyle & style)
+void Component::SetLineStyle(const CStyle & style)
 {
 	m_lineStyle = style;
 }
 
-CStyle CShape::GetFillStyle() const
+StyleVariant Component::GetFillStyle() const
 {
 	return m_fillStyle;
 }
 
-void CShape::SetFillStyle(const CStyle & style)
+void Component::SetFillStyle(const CStyle & style)
 {
 	m_fillStyle = style;
 }
@@ -68,16 +68,16 @@ CRectangle::CRectangle(const RectD & rect)
 
 void CRectangle::Draw(ICanvas & canvas)
 {
-	auto fillStyle = GetFillStyle();
-	auto lineStyle = GetLineStyle();
+	auto fillStyle = boost::get<CStyle>(&GetFillStyle());
+	auto lineStyle = boost::get<CStyle>(&GetLineStyle());
 
-	if (fillStyle.IsEnabled())
+	if (fillStyle && fillStyle->IsEnabled())
 	{
-		canvas.BeginFill(fillStyle.GetColor());
+		canvas.BeginFill(fillStyle->GetColor());
 	}
-	if (lineStyle.IsEnabled())
+	if (lineStyle && lineStyle->IsEnabled())
 	{
-		canvas.SetLineColor(lineStyle.GetColor());
+		canvas.SetLineColor(lineStyle->GetColor());
 	}
 	auto rect = GetFrame();
 
@@ -87,7 +87,7 @@ void CRectangle::Draw(ICanvas & canvas)
 	canvas.LineTo(rect.left, rect.top + rect.height);
 	canvas.LineTo(rect.left, rect.top);
 
-	if (fillStyle.IsEnabled())
+	if (fillStyle && fillStyle->IsEnabled())
 	{
 		canvas.EndFill();
 	}
@@ -100,22 +100,22 @@ CEllipse::CEllipse(const RectD & rect)
 
 void CEllipse::Draw(ICanvas & canvas)
 {
-	auto fillStyle = GetFillStyle();
-	auto lineStyle = GetLineStyle();
+	auto fillStyle = boost::get<CStyle>(&GetFillStyle());
+	auto lineStyle = boost::get<CStyle>(&GetLineStyle());
 
-	if (fillStyle.IsEnabled())
+	if (fillStyle && fillStyle->IsEnabled())
 	{
-		canvas.BeginFill(fillStyle.GetColor());
+		canvas.BeginFill(fillStyle->GetColor());
 	}
-	if (lineStyle.IsEnabled())
+	if (lineStyle && lineStyle->IsEnabled())
 	{
-		canvas.SetLineColor(lineStyle.GetColor());
+		canvas.SetLineColor(lineStyle->GetColor());
 	}
 	auto rect = GetFrame();
 
 	canvas.DrawEllipse(rect.left, rect.top, rect.width, rect.height);
 
-	if (fillStyle.IsEnabled())
+	if (fillStyle && fillStyle->IsEnabled())
 	{
 		canvas.EndFill();
 	}
@@ -129,16 +129,16 @@ CTriangle::CTriangle(const RectD & rect)
 
 void CTriangle::Draw(ICanvas & canvas)
 {
-	auto fillStyle = GetFillStyle();
-	auto lineStyle = GetLineStyle();
+	auto fillStyle = boost::get<CStyle>(&GetFillStyle());
+	auto lineStyle = boost::get<CStyle>(&GetLineStyle());
 
-	if (fillStyle.IsEnabled())
+	if (fillStyle && fillStyle->IsEnabled())
 	{
-		canvas.BeginFill(fillStyle.GetColor());
+		canvas.BeginFill(fillStyle->GetColor());
 	}
-	if (lineStyle.IsEnabled())
+	if (lineStyle && lineStyle->IsEnabled())
 	{
-		canvas.SetLineColor(lineStyle.GetColor());
+		canvas.SetLineColor(lineStyle->GetColor());
 	}
 	auto rect = GetFrame();
 
@@ -147,7 +147,7 @@ void CTriangle::Draw(ICanvas & canvas)
 	canvas.LineTo(rect.left, rect.top + rect.height);
 	canvas.LineTo(rect.left + rect.width / 2.0, rect.top);
 
-	if (fillStyle.IsEnabled())
+	if (fillStyle && fillStyle->IsEnabled())
 	{
 		canvas.EndFill();
 	}
@@ -165,40 +165,36 @@ double CSlide::GetHeight() const
 
 size_t CSlide::GetShapesCount() const
 {
-	return m_shapes.size();
+	return m_components.size();
 }
 
-std::shared_ptr<CShape> CSlide::GetShapeAtIndex(size_t index)
+IComponent* CSlide::GetShapeAtIndex(size_t index)
 {
-	try
+	if (m_components.size() > index)
 	{
-		return m_shapes[index];
-	}
-	catch (...)
-	{
-
+		return m_components[index];
 	}
 	return nullptr;
 }
 
-void CSlide::InsertShape(const std::shared_ptr<CShape>& shape, size_t position)
+void CSlide::InsertShape(IComponent* shape, size_t position)
 {
-	if (position >= m_shapes.size())
+	if (position >= m_components.size())
 	{
-		m_shapes.push_back(shape);
+		m_components.push_back(shape);
 	}
 	else
 	{
-		m_shapes.insert(m_shapes.begin() + position, shape);
+		m_components.insert(m_components.begin() + position, shape);
 	}
 	UpdateFrame();
 }
 
 void CSlide::RemoveShapeAtIndex(size_t index)
 {
-	if (index < m_shapes.size())
+	if (index < m_components.size())
 	{
-		m_shapes.erase(m_shapes.begin() + index);
+		m_components.erase(m_components.begin() + index);
 	}
 }
 
@@ -216,7 +212,7 @@ void CSlide::Draw(ICanvas & canvas)
 {
 	canvas.BeginFill(m_backgroundColor);
 	canvas.EndFill();
-	for (auto &shape : m_shapes)
+	for (auto &shape : m_components)
 	{
 		shape->Draw(canvas);
 	}
@@ -224,14 +220,14 @@ void CSlide::Draw(ICanvas & canvas)
 
 void CSlide::UpdateFrame()
 {
-	if (m_shapes.empty())
+	if (m_components.empty())
 	{
 		return;
 	}
 	double rightBottomX = 0;
 	double rightBottomY = 0;
 
-	std::for_each(m_shapes.begin(), m_shapes.end(), [&](std::shared_ptr<CShape> const& shape) {
+	std::for_each(m_components.begin(), m_components.end(), [&](IComponent* shape) {
 		auto frame = shape->GetFrame();
 		rightBottomX = std::max(rightBottomX, frame.left + frame.width);
 		rightBottomY = std::max(rightBottomY, frame.top + frame.height);
@@ -241,66 +237,76 @@ void CSlide::UpdateFrame()
 	m_height = rightBottomY;
 }
 
-size_t CGroup::GetShapesCount() const
+void Composite::Draw(ICanvas & canvas)
 {
-	return m_shapes.size();
-}
-
-std::shared_ptr<CShape> CGroup::GetShapeAtIndex(size_t index)
-{
-	try
+	for (auto &component : m_components)
 	{
-		return m_shapes[index];
-	}
-	catch (...)
-	{
-
-	}
-	return nullptr;
-}
-
-void CGroup::InsertShape(const std::shared_ptr<CShape>& shape, size_t position)
-{
-	if (position >= m_shapes.size())
-	{
-		m_shapes.push_back(shape);
-	}
-	else
-	{
-		m_shapes.insert(m_shapes.begin() + position, shape);
-	}
-	UpdateFrame();
-}
-
-void CGroup::RemoveShapeAtIndex(size_t index)
-{
-	if (index < m_shapes.size())
-	{
-		m_shapes.erase(m_shapes.begin() + index);
-		UpdateFrame();
+		component->Draw(canvas);
 	}
 }
 
-void CGroup::Draw(ICanvas & canvas)
+StyleVariant Composite::GetLineStyle() const
 {
-	for (auto &shape : m_shapes)
+	if (m_components.empty())
 	{
-		shape->Draw(canvas);
+		return StyleType::UnacceptableStyle;
+	}
+	auto firstElementStyle = m_components.front()->GetLineStyle();
+	for (auto &component : m_components)
+	{
+		if (!(component->GetLineStyle() == firstElementStyle))
+		{
+			return StyleType::UnacceptableStyle;
+		}
+	}
+	return firstElementStyle;
+}
+
+void Composite::SetLineStyle(const CStyle & style)
+{
+	for (auto& component : m_components)
+	{
+		component->SetLineStyle(style);
 	}
 }
 
-void CGroup::UpdateFrame()
+StyleVariant Composite::GetFillStyle() const
 {
-	if (m_shapes.empty())
+	if (m_components.empty())
+	{
+		return StyleType::UnacceptableStyle;
+	}
+	auto firstElementStyle = m_components.front()->GetFillStyle();
+	for (auto &component : m_components)
+	{
+		if (!(component->GetFillStyle() == firstElementStyle))
+		{
+			return StyleType::UnacceptableStyle;
+		}
+	}
+	return firstElementStyle;
+}
+
+void Composite::SetFillStyle(const CStyle & style)
+{
+	for (auto& component : m_components)
+	{
+		component->SetFillStyle(style);
+	}
+}
+
+void Composite::UpdateFrame()
+{
+	if (m_components.empty())
 	{
 		return;
 	}
-	double topLeftX = m_shapes.at(0)->GetFrame().left;
-	double topLeftY = m_shapes.at(0)->GetFrame().top;
+	double topLeftX = m_components.at(0)->GetFrame().left;
+	double topLeftY = m_components.at(0)->GetFrame().top;
 	double rightBottomX = 0;
 	double rightBottomY = 0;
 
-	std::for_each(m_shapes.begin(), m_shapes.end(), [&](std::shared_ptr<CShape> const& shape) {
+	std::for_each(m_components.begin(), m_components.end(), [&](IComponent* shape) {
 		auto frame = shape->GetFrame();
 		topLeftX = std::min(topLeftX, frame.left);
 		topLeftY = std::min(topLeftY, frame.top);
@@ -309,6 +315,70 @@ void CGroup::UpdateFrame()
 	});
 
 	SetFrame({ topLeftX ,topLeftY ,rightBottomX ,rightBottomY });
+}
+
+IComponent * Component::GetComponent(size_t index) const
+{
+	return nullptr;
+}
+
+void Component::AddComponent(IComponent * component, size_t position)
+{
+}
+
+void Component::RemoveComponent(IComponent * component)
+{
+}
+
+Composite * Component::GetComposite()
+{
+	return nullptr;
+}
+
+IComponent * Composite::GetComponent(size_t index) const
+{
+	if (index < m_components.size())
+	{
+		return m_components[index];
+	}
+	return nullptr;
+}
+
+void Composite::AddComponent(IComponent * component, size_t position)
+{
+	if (position >= m_components.size())
+	{
+		m_components.push_back(component);
+	}
+	else
+	{
+		m_components.insert(m_components.begin() + position, component);
+	}
+	UpdateFrame();
+}
+
+void Composite::RemoveComponent(IComponent * component)
+{
+	auto it = std::find(m_components.begin(), m_components.end(), component);
+	if (it != m_components.end())
+	{
+		m_components.erase(it);
+	}
+	UpdateFrame();
+}
+
+Composite * Composite::GetComposite()
+{
+	return this;
+}
+
+bool operator==(const CStyle & left, const CStyle & right)
+{
+	if (left.m_color == right.m_color && left.m_isEnable == right.m_isEnable)
+	{
+		return true;
+	}
+	return false;
 }
 
 }

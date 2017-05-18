@@ -26,23 +26,22 @@ int main()
 	style2.Enable(true);
 	style2.SetColor(0x001010);
 
-	auto rectangleShape = std::make_shared<CRectangle>(RectD{ 30, 10, 15, 15 });
-	rectangleShape->SetFillStyle(rectangleStyle);
-	rectangleShape->SetLineStyle(rectangleStyle);
+	CRectangle rectangleShape(RectD{ 30, 10, 15, 15 });
+	rectangleShape.SetFillStyle(rectangleStyle);
+	rectangleShape.SetLineStyle(rectangleStyle);
 
-	auto ellipseShape = std::make_shared<CEllipse>(RectD{ 40, 35, 20, 30 });
-	ellipseShape->SetFillStyle(style2);
-	ellipseShape->SetLineStyle(style1);
+	CEllipse ellipseShape(RectD{ 40, 35, 20, 30 });
+	ellipseShape.SetFillStyle(style2);
+	ellipseShape.SetLineStyle(style1);
 
-	auto triangleShape = std::make_shared<CTriangle>(RectD{ 10, 10, 20, 10 });
-	triangleShape->SetLineStyle(style2);
+	CTriangle triangleShape(RectD{ 10, 10, 20, 10 });
+	triangleShape.SetLineStyle(style2);
 
-	auto group = std::make_shared<CGroup>();
-	group->InsertShape(ellipseShape);
-	group->InsertShape(triangleShape);
+	Composite group;
+	group.AddComponent(&ellipseShape);
+	group.AddComponent(&triangleShape);
 
-
-	slide.InsertShape(rectangleShape);
-	slide.InsertShape(group);
+	slide.InsertShape(&rectangleShape);
+	slide.InsertShape(&group);
 	slide.Draw(canvas);
 }
