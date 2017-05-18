@@ -1,6 +1,7 @@
 #pragma once
 #include "Canvas.h"
 #include <iostream>
+
 class TextCanvas :
 	public ICanvas
 {
@@ -15,6 +16,8 @@ public:
 	void DrawEllipse(double left, double top, double width, double height) override;
 
 private:
+	void ShowTextedColor(RGBAColor color);
+
 	std::ostream& m_outStream;
 };
 
