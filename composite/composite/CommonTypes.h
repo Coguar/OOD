@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <limits>
 
 template <typename T>
 struct Rect
@@ -12,3 +13,9 @@ struct Rect
 
 typedef Rect<double> RectD;
 typedef uint32_t RGBAColor;
+
+static const RectD UndefinedRectD = RectD({
+		std::numeric_limits<double>::infinity(),
+		std::numeric_limits<double>::infinity(),
+		-std::numeric_limits<double>::infinity(),
+		-std::numeric_limits<double>::infinity() });

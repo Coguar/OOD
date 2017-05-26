@@ -142,19 +142,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Group.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Style.cpp" />
     <ClCompile Include="TextCanvas.cpp" />
-    <ClCompile Include="version1.cpp" />
+    <ClCompile Include="TypedShapes.cpp" />
+    <ClCompile Include="Slide.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="CommonTypes.h" />
+    <ClInclude Include="Group.h" />
+    <ClInclude Include="IGroup.h" />
+    <ClInclude Include="IShape.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Style.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextCanvas.h" />
-    <ClInclude Include="version1.h" />
-    <ClInclude Include="version2.h" />
+    <ClInclude Include="TypedShapes.h" />
+    <ClInclude Include="Slide.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
