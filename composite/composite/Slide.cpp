@@ -15,14 +15,14 @@ double CSlide::GetHeight() const
 
 size_t CSlide::GetShapesCount() const
 {
-	return m_components.size();
+	return m_shapes.size();
 }
 
 IShapePtr CSlide::GetShapeAtIndex(size_t index)
 {
-	if (m_components.size() > index)
+	if (m_shapes.size() > index)
 	{
-		return m_components[index];
+		return m_shapes[index];
 	}
 	return nullptr;
 }
@@ -31,25 +31,25 @@ void CSlide::InsertShape(const IShapePtr &shape, size_t position)
 {
 	if (position == std::numeric_limits<size_t>::max())
 	{
-		m_components.push_back(shape);
+		m_shapes.push_back(shape);
 	}
-	else if (position >= m_components.size())
+	else if (position >= m_shapes.size())
 	{
 		throw std::invalid_argument("Shape position out of range");
 	}
 	else
 	{
-		m_components.insert(m_components.begin() + position, shape);
+		m_shapes.insert(m_shapes.begin() + position, shape);
 	}
 }
 
 void CSlide::RemoveShapeAtIndex(size_t index)
 {
-	if (index >= m_components.size())
+	if (index >= m_shapes.size())
 	{
 		throw std::invalid_argument("Shape index out of range");
 	}
-	m_components.erase(m_components.begin() + index);
+	m_shapes.erase(m_shapes.begin() + index);
 
 }
 
@@ -67,7 +67,7 @@ void CSlide::Draw(ICanvas & canvas)
 {
 	canvas.BeginFill(m_backgroundColor);
 	canvas.EndFill();
-	for (auto &shape : m_components)
+	for (auto &shape : m_shapes)
 	{
 		shape->Draw(canvas);
 	}

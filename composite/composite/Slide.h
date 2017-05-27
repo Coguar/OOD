@@ -24,6 +24,6 @@ private:
 	double m_height = 0;
 	
 	RGBAColor m_backgroundColor;
-	std::vector<IShapePtr> m_components;
+	std::vector<IShapePtr> m_shapes;
 	
 };
