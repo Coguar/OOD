@@ -47,7 +47,7 @@ void Group::RemoveShape(const IShapePtr & component)
 	}
 }
 
-size_t Group::ShapesCount()
+size_t Group::ShapesCount() const
 {
 	return m_components.size();
 }

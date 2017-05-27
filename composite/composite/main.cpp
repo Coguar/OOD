@@ -41,6 +41,8 @@ int main()
 	group->AddShape(ellipseShape);
 	group->AddShape(triangleShape);
 
+	group->SetFrame({ 0, 0, 1000, 1000 });
+
 	slide.InsertShape(rectangleShape);
 	slide.InsertShape(group);
 	slide.Draw(canvas);

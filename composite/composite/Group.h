@@ -12,7 +12,7 @@ public:
 	IShapePtr GetShape(size_t index)const override;
 	void AddShape(const IShapePtr &component, size_t position = std::numeric_limits<size_t>::max()) override;
 	void RemoveShape(const IShapePtr &component) override;
-	size_t ShapesCount() override;
+	size_t ShapesCount() const override;
 
 	OptionalStyle GetLineStyle()const override;
 	void SetLineStyle(const CStyle& style) override;
