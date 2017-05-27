@@ -17,6 +17,7 @@ public:
 	void SetColor(RGBAColor color);
 
 	friend bool operator==(const CStyle& left, const CStyle& right);
+	friend bool operator!=(const CStyle & left, const CStyle & right);
 private:
 	bool m_isEnable;
 	RGBAColor m_color;
