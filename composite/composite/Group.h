@@ -3,7 +3,7 @@
 #include <vector>
 
 class Group : public IGroup,
-			public std::enable_shared_from_this<IGroup>
+			public std::enable_shared_from_this<Group>
 {
 public:
 	Group();
