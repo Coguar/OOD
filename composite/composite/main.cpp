@@ -43,11 +43,14 @@ int main()
 	triangleShape->SetLineStyle(blueStyle);
 
 	auto group = std::make_shared<Group>();
-	group->AddShape(ellipseShape);
 	group->AddShape(triangleShape);
+	group->AddShape(ellipseShape);
 
-	slide.AddShape(rectangleShape);
+	group->SetFillStyle(greenStyle);
+	group->SetLineStyle(redStyle);
+
 	slide.AddShape(group);
+	slide.AddShape(rectangleShape);
 	slide.SetBackgroundColor(0xFFFFFF);
 
 	RenderWindow window(VideoMode(int(slide.GetWidth()) + DEFAULT_MARGIN, int(slide.GetHeight()) + DEFAULT_MARGIN), "Composite");
