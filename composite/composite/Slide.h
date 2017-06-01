@@ -1,28 +1,25 @@
 ﻿#pragma once
 #include "Canvas.h"
-#include "IShape.h"
+#include "IShapesCollection.h"
 #include <vector>
 
-class CSlide
+class CSlide : public IShapesCollection
 {
 public:
 	double GetWidth()const;
 	double GetHeight()const;
 
-	size_t GetShapesCount()const;
-	IShapePtr GetShapeAtIndex(size_t index);
-	void InsertShape(const IShapePtr &shape, size_t position = std::numeric_limits<size_t>::max());
-	void RemoveShapeAtIndex(size_t index);
+	IShapePtr GetShape(size_t index)const override;
+	void AddShape(const IShapePtr &component, size_t position = std::numeric_limits<size_t>::max()) override;
+	void RemoveShape(const IShapePtr &component) override;
+	size_t ShapesCount() const override;
 
 	RGBAColor GetBackgroundColor()const;
 	void SetBackgroundColor(RGBAColor color);
 
 	void Draw(ICanvas & canvas);
 
-private:
-	double m_width = 0;
-	double m_height = 0;
-	
+private:	
 	RGBAColor m_backgroundColor;
 	std::vector<IShapePtr> m_shapes;
 	

@@ -14,8 +14,4 @@ struct Rect
 typedef Rect<double> RectD;
 typedef uint32_t RGBAColor;
 
-static const RectD UndefinedRectD = RectD({
-		std::numeric_limits<double>::infinity(),
-		std::numeric_limits<double>::infinity(),
-		-std::numeric_limits<double>::infinity(),
-		-std::numeric_limits<double>::infinity() });
+static const RectD ZeroRectD = RectD({0,0,0,0});

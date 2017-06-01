@@ -4,10 +4,10 @@
 #include <memory>
 #include <numeric>
 
-class IGroup;
+class IShapesCollection;
 class IShape;
 
-using IGroupPtr = std::shared_ptr<IGroup>;
+using IGroupPtr = std::shared_ptr<IShapesCollection>;
 using IShapePtr = std::shared_ptr<IShape>;
 
 class IDrawable

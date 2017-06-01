@@ -1,13 +1,12 @@
 #pragma once
-#include "IGroup.h"
+#include "IShapesCollection.h"
 #include <vector>
 
-class Group : public IGroup,
+class Group : public IShapesCollection,
+			public IShape,
 			public std::enable_shared_from_this<Group>
 {
 public:
-	Group();
-	~Group();
 
 	IShapePtr GetShape(size_t index)const override;
 	void AddShape(const IShapePtr &component, size_t position = std::numeric_limits<size_t>::max()) override;
@@ -28,6 +27,6 @@ public:
 	void Draw(ICanvas & canvas) override;
 
 private:
-	std::vector<IShapePtr> m_components;
+	std::vector<IShapePtr> m_shapes;
 };
 

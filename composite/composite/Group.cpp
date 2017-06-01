@@ -1,61 +1,50 @@
 #include "Group.h"
 
-
-
-Group::Group()
-{
-}
-
-
-Group::~Group()
-{
-}
-
 IShapePtr Group::GetShape(size_t index) const
 {
-	if (index >= m_components.size())
+	if (index >= m_shapes.size())
 	{
 		throw std::invalid_argument("Shapes index out of range");
 	}
-	return m_components.at(index);
+	return m_shapes.at(index);
 }
 
 void Group::AddShape(const IShapePtr & component, size_t position)
 {
 	if (position == std::numeric_limits<size_t>::max())
 	{
-		m_components.push_back(component);
+		m_shapes.push_back(component);
 	}
-	else if (position >= m_components.size())
+	else if (position >= m_shapes.size())
 	{
 		throw std::invalid_argument("Shape position out of range");
 	}
 	else
 	{
-		m_components.insert(m_components.begin() + position, component);
+		m_shapes.insert(m_shapes.begin() + position, component);
 	}
 }
 
 void Group::RemoveShape(const IShapePtr & component)
 {
-	for (auto i = m_components.begin(); i != m_components.end(); ++i)
+	for (auto i = m_shapes.begin(); i != m_shapes.end(); ++i)
 	{
 		if (*i == component)
 		{
-			m_components.erase(i);
+			m_shapes.erase(i);
 		}
 	}
 }
 
 size_t Group::ShapesCount() const
 {
-	return m_components.size();
+	return m_shapes.size();
 }
 
 OptionalStyle Group::GetLineStyle() const
 {
 	OptionalStyle style;
-	for (auto &shape : m_components)
+	for (auto &shape : m_shapes)
 	{
 		if (!style)
 		{
@@ -71,7 +60,7 @@ OptionalStyle Group::GetLineStyle() const
 
 void Group::SetLineStyle(const CStyle & style)
 {
-	for (auto &shape : m_components)
+	for (auto &shape : m_shapes)
 	{
 		shape->SetLineStyle(style);
 	}
@@ -80,7 +69,7 @@ void Group::SetLineStyle(const CStyle & style)
 OptionalStyle Group::GetFillStyle() const
 {
 	OptionalStyle style;
-	for (auto &shape : m_components)
+	for (auto &shape : m_shapes)
 	{
 		if (!style)
 		{
@@ -96,7 +85,7 @@ OptionalStyle Group::GetFillStyle() const
 
 void Group::SetFillStyle(const CStyle & style)
 {
-	for (auto &shape : m_components)
+	for (auto &shape : m_shapes)
 	{
 		shape->SetFillStyle(style);
 	}
@@ -104,8 +93,12 @@ void Group::SetFillStyle(const CStyle & style)
 
 RectD Group::GetFrame() const
 {
-	RectD rect = UndefinedRectD;
-	for (auto &shape : m_components)
+	if (m_shapes.empty())
+	{
+		return ZeroRectD;
+	}
+	RectD rect = m_shapes.front()->GetFrame();
+	for (auto &shape : m_shapes)
 	{
 		auto shapeRect = shape->GetFrame();
 		rect.left = std::min(shapeRect.left, rect.left);
@@ -123,7 +116,7 @@ void Group::SetFrame(const RectD & rect)
 	auto xScale = rect.width / currentRect.width;
 	auto yScale = rect.height / currentRect.height;
 
-	for (auto &shape : m_components)
+	for (auto &shape : m_shapes)
 	{
 		auto shapeRect = shape->GetFrame();
 		auto xOffset = rect.left - currentRect.left;
@@ -141,7 +134,7 @@ IGroupPtr Group::GetGroup()
 
 void Group::Draw(ICanvas & canvas)
 {
-	for (auto &shape : m_components)
+	for (auto &shape : m_shapes)
 	{
 		shape->Draw(canvas);
 	}
