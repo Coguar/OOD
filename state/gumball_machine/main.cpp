@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "NaiveGumBallMachine.h"
 #include "GumBallMachineWithState.h"
 #include "GumBallMachineWithDynamicallyCreatedState.h"
@@ -66,6 +67,6 @@ int main()
 
 	cout << "\n-----------------\n";
 	TestGumballMachineWithDynamicState();
-
+	
 	return 0;
 }
