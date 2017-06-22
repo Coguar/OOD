@@ -84,8 +84,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -98,8 +97,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -113,8 +111,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -131,8 +128,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -148,26 +144,39 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AbstractCommand.cpp" />
+    <ClCompile Include="ChangeStringCommand.cpp" />
+    <ClCompile Include="DeleteCommand.cpp" />
     <ClCompile Include="Document.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="InsertImageCommand.cpp" />
+    <ClCompile Include="InsertParagraphCommand.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Paragraph.cpp" />
+    <ClCompile Include="ResizeImageCommand.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractCommand.h" />
+    <ClInclude Include="ChangeStringCommand.h" />
+    <ClInclude Include="DeleteCommand.h" />
     <ClInclude Include="Document.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="ICommand.h" />
+    <ClInclude Include="ICommand_fwd.h" />
     <ClInclude Include="IDocument.h" />
     <ClInclude Include="IHistory.h" />
     <ClInclude Include="IImage.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="InsertImageCommand.h" />
+    <ClInclude Include="InsertParagraphCommand.h" />
     <ClInclude Include="IParagraph.h" />
     <ClInclude Include="Items.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Paragraph.h" />
+    <ClInclude Include="ResizeImageCommand.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

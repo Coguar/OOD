@@ -13,5 +13,16 @@
 #include <memory>
 #include <deque>
 #include <vector>
+#include <iostream>
+#include <sstream>
+#include <functional>
+#include <boost/range/algorithm/find_if.hpp>
+#include <cassert>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <string>
+#include <boost/optional.hpp>
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/format.hpp>
 
 // TODO: reference additional headers your program requires here

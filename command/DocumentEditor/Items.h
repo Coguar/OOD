@@ -6,9 +6,6 @@ class IImage;
 using ParagraphPtr = std::shared_ptr<IParagraph>;
 using ImagePtr = std::shared_ptr<IImage>;
 
-/*
-Неизменяемый элемент документа
-*/
 class CConstDocumentItem
 {
 public:

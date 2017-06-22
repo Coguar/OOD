@@ -1,5 +1,5 @@
 #pragma once
-#include "ICommand.h"
+#include "ICommand_fwd.h"
 
 class IHistory
 {

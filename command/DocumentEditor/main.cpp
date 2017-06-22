@@ -1,123 +1,229 @@
-#include <string>
-#include <iostream>
-#include <memory>
-#include <boost/optional.hpp>
-#include <boost/filesystem.hpp>
-
+#include "stdafx.h"
+#include "Menu.h"
+#include "Document.h"
+#include "IParagraph.h"
+#include "IImage.h"
 
 using namespace std;
+using namespace std::placeholders;
 
-typedef boost::filesystem::path Path;
-using boost::optional;
-using boost::none;
+namespace
+{
 
-//class IParagraph;
-//class IImage;
-//
-///*
-//Неизменяемый элемент документа
-//*/
-//class CConstDocumentItem
-//{
-//public:
-//	// Возвращает указатель на константное изображение, либо nullptr, если элемент не является изображением
-//	shared_ptr<const IImage> GetImage()const;
-//	// Возвращает указатель на константный параграф, либо nullptr, если элемент не является параграфом
-//	shared_ptr<const IParagraph> GetParagraph()const;
-//	virtual ~CConstDocumentItem() = default;
-//};
-//
-///*
-//Элемент документа. Позволяет получить доступ к изображению или параграфу
-//*/
-//class CDocumentItem : public CConstDocumentItem
-//{
-//public:
-//	// Возвращает указатель на изображение, либо nullptr, если элемент не является изображением
-//	shared_ptr<IImage> GetImage();
-//	// Возвращает указатель на параграф, либо nullptr, если элемент не является параграфом
-//	shared_ptr<IParagraph> GetParagraph();
-//};
+class CEditor
+{
+public:
+	CEditor()  //-V730
+		:m_document(make_unique<Document>())
+	{
+		m_menu.AddItem("help", "Help", [this](istream&) { m_menu.ShowInstructions(); });
+		m_menu.AddItem("exit", "Exit", [this](istream&) { m_menu.Exit(); });
+		AddMenuItem("setTitle", "Changes title. Args: <new title>", &CEditor::SetTitle);
+		m_menu.AddItem("list", "Show document listing", bind(&CEditor::List, this, _1));
+		AddMenuItem("undo", "Undo command", &CEditor::Undo);
+		AddMenuItem("redo", "Redo undone command", &CEditor::Redo);
+		AddMenuItem("insertParagraph", "Inserts paragraph. USAGE: insertParagraph <position>|end <paragraph text>", &CEditor::AddParagraph);
+		AddMenuItem("insertImage", "Inserts image. USAGE: insertImage <position>|end <width> <height> <path_to_file>", &CEditor::AddImage);
+		AddMenuItem("replaceText", "Replace paragraph text. USAGE: replaceText <position> <paragraph text>", &CEditor::ReplaceText);
+		AddMenuItem("resizeImage", "Resize image. USAGE: resizeImage <position> <width> <height>", &CEditor::ResizeImage);
+		AddMenuItem("deleteItem", "Delete item. USAGE: deleteItem <position>", &CEditor::DeleteItem);
+		AddMenuItem("save", "Save document. USAGE: save <path>", &CEditor::Save);
+	}
 
-/* Параграф текста*/
-//class IParagraph
-//{
-//public:
-//	virtual string GetText()const = 0;
-//	virtual void SetText(const string& text) = 0;
-//	virtual ~IParagraph() = default;
-//};
+	void Start()
+	{
+		m_menu.Run();
+	}
+
+private:
+	// Указатель на метод класса CEditor, принимающий istream& и возвращающий void
+	typedef void (CEditor::*MenuHandler)(istream & in);
+
+	void AddMenuItem(const string & shortcut, const string & description, MenuHandler handler)
+	{
+		m_menu.AddItem(shortcut, description, bind(handler, this, _1));
+	}
+
+	boost::optional<size_t> GetPosition(istream & in)
+	{
+		boost::optional<size_t> position;
+		string positionStr;
+		in >> positionStr;
+		if (positionStr != "end")
+		{
+			position = stoul(positionStr);
+		}
+		return position;
+	}
+
+	// TODO: скипнуть первый пробел элегантнее
+	void SetTitle(istream & in)
+	{
+		string head;
+		string tail;
+
+		if (in >> head)
+		{
+			getline(in, tail);
+		}
+		string title = head + tail;
+
+		m_document->SetTitle(title);
+	}
+
+	void AddParagraph(istream & in)
+	{
+
+		boost::optional<size_t> position = GetPosition(in);
+		string text;
+		getline(in, text);
+
+		m_document->InsertParagraph(text, position);
+	}
+
+	void AddImage(istream & in)
+	{
+		string positionStr;
+		in >> positionStr;
+
+		boost::optional<size_t> position;
+		if (positionStr == "end")
+		{
+			position = boost::none;
+		}
+		else
+		{
+			position = stoul(positionStr);
+		}
+
+		int width;
+		int height;
+		in >> width >> height;
+
+		string head;
+		string path;
+		if (in >> head)
+		{
+			getline(in, path);
+		}
+		path = head + path;
+
+		m_document->InsertImage(path, width, height, position);
+
+	}
+
+	void List(istream & /*in*/)
+	{
+		cout << "-------------" << endl;
+		cout << "Title: " << m_document->GetTitle() << endl;
+		for (size_t i = 0; i < m_document->GetItemsCount(); ++i)
+		{
+			auto item = m_document->GetItem(i);
+			if (auto paragraphPtr = item.GetParagraph())
+			{
+				cout << i << ".Paragraph: " << paragraphPtr->GetText() << endl;
+			}
+			else if (auto imagePtr = item.GetImage())
+			{
+				cout << i << ".Image: " << imagePtr->GetWidth() << " "<< imagePtr->GetHeight() << " "<< imagePtr->GetPath() << endl;
+			}
+
+		}
+		cout << "-------------" << endl;
+
+	}
+	void ReplaceText(istream & in)
+	{
+		size_t position;
+		in >> position;
+
+		string text;
+		getline(in, text);
+
+		auto item = m_document->GetItem(position);
+		if (auto paragraphPtr = item.GetParagraph())
+		{
+			paragraphPtr->SetText(text);
+			return;
+		}
+		throw std::runtime_error("this is not parargaph");
+	}
+
+	void Save(istream & in)
+	{
+		string path;
+		in.get();
+		getline(in, path);
+		if (path.empty())
+		{
+			cout << "path is empty" << endl;
+			return;
+		}
+		m_document->Save(path);
+	}
+
+	void ResizeImage(istream & in)
+	{
+		size_t position;
+		int width, height;
+		in >> position >> width >> height;
 
 
-//class IImage
-//{
-//public:
-//	// Возвращает путь относительно каталога документа
-//	virtual Path GetPath()const = 0;
-//
-//	// Ширина изображения в пикселях
-//	virtual int GetWidth()const = 0;
-//	// Высота изображения в пикселях
-//	virtual int GetHeight()const = 0;
-//	
-//	// Изменяет размер изображения
-//	virtual void Resize(int width, int height) = 0;
-//	
-//	virtual ~IImage() = default;
-//};
+		if (width < 1 || width > 10000)
+		{
+			throw std::invalid_argument("invalid image width");
+		}
+		if (height < 1 || height > 10000)
+		{
+			throw std::invalid_argument("invalid image height");
+		}
+		auto item = m_document->GetItem(position);
+		if (auto imagePtr = item.GetImage())
+		{
+			imagePtr->Resize(width, height);
+			return;
+		}
+		throw std::runtime_error("item isn't shape");
+	}
 
-/*
-Интерфес документа
-*/
-//class IDocument
-//{
-//public:
-//	// Вставляет параграф текста в указанную позицию (сдвигая последующие элементы)
-//	// Если параметр position не указан, вставка происходит в конец документа
-//	virtual shared_ptr<IParagraph> InsertParagraph(const string& text, 
-//		optional<size_t> position = none) = 0;
-//
-//	// Вставляет изображение в указанную позицию (сдвигая последующие элементы)
-//	// Параметр path задает путь к вставляемому изображению
-//	// При вставке изображение должно копироваться в подкаталог images 
-//	// под автоматически сгенерированным именем
-//	virtual shared_ptr<IImage> InsertImage(const Path& path, int width, int height, 
-//		optional<size_t> position = none) = 0;
-//	
-//	// Возвращает количество элементов в документе
-//	virtual size_t GetItemsCount()const = 0;
-//
-//	// Доступ к элементам изображения
-//	virtual CConstDocumentItem GetItem(size_t index)const = 0;
-//	virtual CDocumentItem GetItem(size_t index) = 0;
-//
-//	// Удаляет элемент из документа
-//	virtual void DeleteItem(size_t index) = 0;
-//
-//	// Возвращает заголовок документа
-//	virtual string GetTitle()const = 0;
-//	// Изменяет заголовок документа
-//	virtual void SetTitle(const string & title) = 0;
-//
-//	// Сообщает о доступности операции Undo
-//	virtual bool CanUndo()const = 0;
-//	// Отменяет команду редактирования
-//	virtual void Undo() = 0;
-//
-//	// Сообщает о доступности операции Redo
-//	virtual bool CanRedo()const = 0;
-//	// Выполняет отмененную команду редактирования
-//	virtual void Redo() = 0;
-//
-//	// Сохраняет документ в формате html. Изображения сохраняются в подкаталог images
-//	// пути к изображениям указываются относительно пути к сохраняемому HTML файлу
-//	virtual void Save(const Path& path)const = 0;
-//
-//	virtual ~IDocument() = default;
-//};
+	void DeleteItem(istream & in)
+	{
+		size_t position;
+		in >> position;
 
+		m_document->DeleteItem(position);
+	}
+
+
+	void Undo(istream &)
+	{
+		if (m_document->CanUndo())
+		{
+			m_document->Undo();
+			return;
+		}
+			cout << "Can't undo" << endl;
+	}
+
+	void Redo(istream &)
+	{
+		if (m_document->CanRedo())
+		{
+			m_document->Redo();
+			return;
+		}
+		cout << "Can't redo" << endl;
+	}
+
+	CMenu m_menu;
+	unique_ptr<IDocument> m_document;
+};
+
+}
 
 int main()
 {
-
+	CEditor editor;
+	editor.Start();
+	return 0;
 }

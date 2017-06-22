@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Paragraph.h"
-
+#include "ChangeStringCommand.h"
 
 
 Paragraph::Paragraph(const std::string& text, IHistory& history)
@@ -21,5 +21,5 @@ std::string Paragraph::GetText() const
 
 void Paragraph::SetText(const std::string & text)
 {
-	m_text = text;
+	m_history.ExecuteCommand(std::make_unique<CChangeStringCommand>(m_text, text));
 }

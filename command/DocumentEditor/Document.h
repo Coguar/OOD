@@ -1,5 +1,6 @@
 #pragma once
 #include "IDocument.h"
+#include "History.h"
 
 class Document : public IDocument
 {
@@ -25,8 +26,10 @@ public:
 	ImagePtr InsertImage(const std::string& path, int width, int height, optional<size_t> position = none) override;
 	ParagraphPtr InsertParagraph(const std::string& text, optional<size_t> position = none) override;
 
+	void Save(const std::string& path)const override;
+
 private:
-	std::unique_ptr<IHistory> m_history;
+	History m_history;
 
 	std::string m_title;
 
