@@ -2,6 +2,7 @@
 #include "Image.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/operations.hpp>
+#include "ResizeImageCommand.h"
 
 Image::Image(const std::string & path, int width, int height, IHistory & history)
 	: m_history(history)
@@ -38,7 +39,7 @@ int Image::GetHeight() const
 
 void Image::Resize(int width, int height)
 {
-	//todo 
+	m_history.ExecuteCommand(std::make_unique<ResizeImageCommand>(shared_from_this(), m_width, m_height, width, height));
 }
 
 void Image::SetSize(int width, int height)
