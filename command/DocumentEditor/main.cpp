@@ -22,8 +22,8 @@ public:
 		m_menu.AddItem("list", "Show document listing", bind(&CEditor::List, this, _1));
 		AddMenuItem("undo", "Undo command", &CEditor::Undo);
 		AddMenuItem("redo", "Redo undone command", &CEditor::Redo);
-		AddMenuItem("insertParagraph", "Inserts paragraph. USAGE: insertParagraph <position>|end <paragraph text>", &CEditor::AddParagraph);
-		AddMenuItem("insertImage", "Inserts image. USAGE: insertImage <position>|end <width> <height> <path_to_file>", &CEditor::AddImage);
+		AddMenuItem("insertParagraph", "Inserts paragraph. USAGE: insertParagraph <position>|end <paragraph text>", &CEditor::InsertParagraph);
+		AddMenuItem("insertImage", "Inserts image. USAGE: insertImage <position>|end <width> <height> <path_to_file>", &CEditor::InsertImage);
 		AddMenuItem("replaceText", "Replace paragraph text. USAGE: replaceText <position> <paragraph text>", &CEditor::ReplaceText);
 		AddMenuItem("resizeImage", "Resize image. USAGE: resizeImage <position> <width> <height>", &CEditor::ResizeImage);
 		AddMenuItem("deleteItem", "Delete item. USAGE: deleteItem <position>", &CEditor::DeleteItem);
@@ -71,7 +71,7 @@ private:
 		m_document->SetTitle(title);
 	}
 
-	void AddParagraph(istream & in)
+	void InsertParagraph(istream & in)
 	{
 
 		boost::optional<size_t> position = GetPosition(in);
@@ -81,7 +81,7 @@ private:
 		m_document->InsertParagraph(text, position);
 	}
 
-	void AddImage(istream & in)
+	void InsertImage(istream & in)
 	{
 		string positionStr;
 		in >> positionStr;
