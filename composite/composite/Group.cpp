@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Group.h"
 
 IShapePtr Group::GetShape(size_t index) const
